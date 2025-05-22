@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 20, 2025 at 11:13 AM
+-- Generation Time: May 22, 2025 at 03:36 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -61,6 +61,17 @@ CREATE TABLE `kk` (
   `rt_id` int(11) DEFAULT NULL,
   `nik` varchar(16) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `kk`
+--
+
+INSERT INTO `kk` (`no_kk`, `rt_id`, `nik`) VALUES
+('3201010101010001', NULL, NULL),
+('3201010101010002', NULL, NULL),
+('3201010101010003', NULL, NULL),
+('3201010101010004', NULL, NULL),
+('3201010101010005', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -131,10 +142,20 @@ CREATE TABLE `tagihan` (
 
 CREATE TABLE `user` (
   `id` int(11) NOT NULL,
-  `nik` char(16) NOT NULL,
-  `password` char(60) NOT NULL,
+  `nik` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `password` varchar(60) NOT NULL,
   `role_id` int(10) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`id`, `nik`, `password`, `role_id`) VALUES
+(1, '3201010101010001', '$2a$12$dT4iQRmxAE5etsCKo.FRwOvxjuw5UdKLDTONmSpIwwAnC63eUvICa', 1),
+(2, '3201010101010002', '$2a$12$dT4iQRmxAE5etsCKo.FRwOvxjuw5UdKLDTONmSpIwwAnC63eUvICa', 3),
+(3, '3201010101010004', '$2a$12$dT4iQRmxAE5etsCKo.FRwOvxjuw5UdKLDTONmSpIwwAnC63eUvICa', 2),
+(4, '3201010101010005', '$2a$12$dT4iQRmxAE5etsCKo.FRwOvxjuw5UdKLDTONmSpIwwAnC63eUvICa', 4);
 
 -- --------------------------------------------------------
 
@@ -159,8 +180,20 @@ CREATE TABLE `warga` (
   `kewarganegaraan` varchar(50) DEFAULT NULL,
   `no_paspor` varchar(20) DEFAULT NULL,
   `no_kitap` varchar(20) DEFAULT NULL,
-  `ayah` varchar(100) DEFAULT NULL
+  `ayah` varchar(100) DEFAULT NULL,
+  `ibu` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `warga`
+--
+
+INSERT INTO `warga` (`nik`, `nama`, `no_kk`, `jenis_kelamin`, `tempat_lahir`, `tanggal_lahir`, `agama`, `pendidikan`, `jenis_pekerjaan`, `golongan_darah`, `status_perkawinan`, `tanggal_perkawinan`, `status_hubungan_dalam_keluarga`, `kewarganegaraan`, `no_paspor`, `no_kitap`, `ayah`, `ibu`) VALUES
+('3201010101010001', 'Ahmad Fauzi', '3201010101010001', 'laki-laki', 'Bandung', '1985-07-15', 'Islam', 'S1', 'Karyawan Swasta', 'O', 'kawin_tercatat', '2010-05-20', 'Kepala Keluarga', 'WNI', NULL, NULL, 'Budi Santoso', 'Siti Aminah'),
+('3201010101010002', 'Sari Dewi', '3201010101010001', 'perempuan', 'Bandung', '1987-09-30', 'Islam', 'SMA', 'Ibu Rumah Tangga', 'A', 'kawin_tercatat', '2010-05-20', 'Istri', 'WNI', NULL, NULL, 'Ahmad Fauzi', 'Siti Aminah'),
+('3201010101010003', 'Rizky Pratama', '3201010101010001', 'laki-laki', 'Bandung', '2012-03-10', 'Islam', 'SD', 'Pelajar', NULL, 'belum_kawin', NULL, 'Anak', 'WNI', NULL, NULL, 'Ahmad Fauzi', 'Sari Dewi'),
+('3201010101010004', 'Dewi Lestari', '3201010101010002', 'perempuan', 'Jakarta', '1990-01-05', 'Islam', 'D3', 'Guru', 'B', 'kawin_tercatat', '2012-07-18', 'Istri', 'WNI', NULL, NULL, 'Rahmat Hidayat', 'Yuniarti'),
+('3201010101010005', 'Andi Saputra', '3201010101010002', 'laki-laki', 'Jakarta', '1988-11-22', 'Islam', 'SMA', 'Wiraswasta', 'AB', 'kawin_tercatat', '2012-07-18', 'Kepala Keluarga', 'WNI', NULL, NULL, 'Samsul Arifin', 'Rohani');
 
 -- --------------------------------------------------------
 
@@ -201,13 +234,16 @@ ALTER TABLE `iuran`
 --
 ALTER TABLE `jabatan`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `role_id` (`role_id`);
+  ADD KEY `role_id` (`role_id`),
+  ADD KEY `nik` (`nik`);
 
 --
 -- Indexes for table `kk`
 --
 ALTER TABLE `kk`
   ADD PRIMARY KEY (`no_kk`),
+  ADD UNIQUE KEY `nik` (`nik`),
+  ADD UNIQUE KEY `rt_id_2` (`rt_id`),
   ADD KEY `rt_id` (`rt_id`);
 
 --
@@ -242,7 +278,10 @@ ALTER TABLE `tagihan`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_user_role` (`role_id`);
+  ADD UNIQUE KEY `nik_3` (`nik`),
+  ADD KEY `fk_user_role` (`role_id`),
+  ADD KEY `nik` (`nik`),
+  ADD KEY `nik_2` (`nik`);
 
 --
 -- Indexes for table `warga`
@@ -301,7 +340,7 @@ ALTER TABLE `tagihan`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables
@@ -311,7 +350,14 @@ ALTER TABLE `user`
 -- Constraints for table `jabatan`
 --
 ALTER TABLE `jabatan`
-  ADD CONSTRAINT `jabatan_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`);
+  ADD CONSTRAINT `jabatan_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`),
+  ADD CONSTRAINT `jabatan_ibfk_2` FOREIGN KEY (`nik`) REFERENCES `warga` (`nik`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `kk`
+--
+ALTER TABLE `kk`
+  ADD CONSTRAINT `kk_ibfk_1` FOREIGN KEY (`nik`) REFERENCES `warga` (`nik`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `pengumuman`
@@ -330,7 +376,8 @@ ALTER TABLE `tagihan`
 -- Constraints for table `user`
 --
 ALTER TABLE `user`
-  ADD CONSTRAINT `fk_user_role` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`);
+  ADD CONSTRAINT `fk_user_role` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`),
+  ADD CONSTRAINT `user_ibfk_1` FOREIGN KEY (`nik`) REFERENCES `warga` (`nik`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `warga`
